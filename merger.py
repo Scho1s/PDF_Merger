@@ -1,5 +1,5 @@
 import argparse
-from PyPDF2 import PdfWriter, PdfReader
+from pypdf import PdfWriter, PdfReader
 
 
 def get_pages(args_):
