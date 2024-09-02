@@ -4,19 +4,16 @@ from pypdf import PdfWriter, PdfReader
 
 def get_pages(args_):
     final_list = {}
-    files = " ".join(args_).split(";")
-    for file in files:
-        pages_list = []
+    for file in " ".join(args_).split(";"):
+        pages_to_add = []
         file_pages = file.strip().split(" ")
-        filename = file_pages[0]
-        for page in file_pages[1:]:
+        filename_ = file_pages.pop(0)
+        for page in file_pages:
             if "-" in page:
-                first, second = map(int, page.split("-"))
-                for index in range(first, second + 1):
-                    pages_list.append(index - 1)
+                pages_to_add += [*range(*map(int, page.split("-")))]
             else:
-                pages_list.append(int(page) - 1)
-        final_list[filename] = pages_list
+                pages_to_add += int(page) - 1
+        final_list[filename_] = pages_to_add
     return final_list
 
 
