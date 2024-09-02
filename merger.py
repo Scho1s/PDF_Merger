@@ -31,7 +31,6 @@ args = parser.parse_args()
 
 try:
     outfile = PdfWriter()
-    get_pages(args.pages)
     for filename, pages in get_pages(args.pages).items():
         if len(pages) == 0:
             outfile.append(fileobj=PdfReader(filename, strict=False))
@@ -43,4 +42,4 @@ except IndexError as e:
 except PermissionError as e:
     print(f"Final file is open. Please close it and try again.\n{e}")
 except ValueError as e:
-    print(f"Unable to read one or both pdf files.\n{e}")
+    print(f"Unable to read one or more pdf files.\n{e}")
