@@ -2,6 +2,9 @@ import argparse
 from pypdf import PdfWriter, PdfReader
 
 
+FINAL_FILE_NAME = "final_file.pdf"
+
+
 def get_pages(args_):
     final_list = {}
     for file in " ".join(args_).split(";"):
@@ -31,12 +34,15 @@ args = parser.parse_args()
 
 try:
     outfile = PdfWriter()
-    for filename, pages in get_pages(args.pages).items():
-        if len(pages) == 0:
-            outfile.append(fileobj=PdfReader(filename, strict=False))
-        else:
-            outfile.append(fileobj=PdfReader(filename, strict=False), pages=pages)
-        outfile.write("final_file.pdf")
+    if args.merge:
+        for filename, pages in get_pages(args.pages).items():
+            if len(pages) == 0:
+                outfile.append(fileobj=PdfReader(filename, strict=False))
+            else:
+                outfile.append(fileobj=PdfReader(filename, strict=False), pages=pages)
+            outfile.write(FINAL_FILE_NAME)
+    else:
+        print("No argument supplied (-m). Nothing has been processed.")
 except IndexError as e:
     print(f"Page not found. Check the page range.\n{e}")
 except PermissionError as e:
