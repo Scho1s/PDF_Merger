@@ -11,11 +11,14 @@ def get_pages(args_):
         pages_to_add = []
         file_pages = file.strip().split(" ")
         filename_ = file_pages.pop(0)
-        for page in file_pages:
-            if "-" in page:
-                pages_to_add += [*range(*map(int, page.split("-")))]
-            else:
-                pages_to_add += int(page) - 1
+        if len(file_pages) > 1:
+            for page in file_pages:
+                if "-" in page:
+                    pages_to_add.append([*range(*map(int, page.split("-")))])
+                else:
+                    pages_to_add.append(int(page) - 1)
+        else:
+            pages_to_add.append(int(file_pages[0]) - 1)
         final_list[filename_] = pages_to_add
     return final_list
 
@@ -46,6 +49,6 @@ try:
 except IndexError as e:
     print(f"Page not found. Check the page range.\n{e}")
 except PermissionError as e:
-    print(f"Final file is open. Please close it and try again.\n{e}")
+    print(f"Final file is open. Close it and try again.\n{e}")
 except ValueError as e:
     print(f"Unable to read one or more pdf files.\n{e}")
